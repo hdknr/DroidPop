@@ -14,7 +14,11 @@ using Android.Widget;
 
 namespace DroidPop
 {
-	public class WebPopFragment : Fragment
+	/// <summary>
+	/// Web pop fragment.
+	/// http://bit.ly/droid_dialog
+	/// </summary>
+	public class WebPopFragment : DialogFragment
 	{
 		public override void OnCreate (Bundle savedInstanceState)
 		{
@@ -23,12 +27,22 @@ namespace DroidPop
 			// Create your fragment here
 		}
 
+
 		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			// Use this to return your custom view for this Fragment
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
 
-			return base.OnCreateView (inflater, container, savedInstanceState);
+			base.OnCreateView (inflater, container, savedInstanceState);
+
+			var view = inflater.Inflate(Resource.Layout.WebPop, container, false);
+
+			view.Button (Resource.Id.CloseButton).Click += delegate
+			{
+				this.Dismiss();
+			};
+			return view;
+		
 		}
 	}
 }
