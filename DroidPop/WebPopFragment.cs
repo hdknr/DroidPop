@@ -18,7 +18,7 @@ namespace DroidPop
 	/// Web pop fragment.
 	/// http://bit.ly/droid_dialog
 	/// </summary>
-	public class WebPopFragment : DialogFragment, View.IOnTouchListener
+	public class WebPopFragment : DialogFragment
 	{
 		public override void OnCreate (Bundle savedInstanceState)
 		{
@@ -26,9 +26,14 @@ namespace DroidPop
 
 			// Create your fragment here
 		}
+			
+		MyWebViewClient WebClient {get;set ; } = new MyWebViewClient ();
 
-
-		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+		public override View OnCreateView (
+			LayoutInflater inflater, 
+			ViewGroup container, 
+			Bundle savedInstanceState
+		)
 		{
 			// Use this to return your custom view for this Fragment
 			// return inflater.Inflate(Resource.Layout.YourFragment, container, false);
@@ -42,22 +47,45 @@ namespace DroidPop
 				this.Dismiss();
 			};
 			var webview = view.WebView (Resource.Id.WebContent);
-			webview.LoadData (@"<html><body><a href=""#close"">Close</a></body></html>",
+			webview.LoadData (
+				@"<html><body><a href=""/close"">Close</a></body></html>",
 				"text/html", "utf-u");
-			webview.SetOnTouchListener (this);
-//			webview.Click += (object sender, EventArgs e) => {
-//				Android.Util.Log.Debug("WebPopFragment", "Web View Clicked");
-//			};
+			
+			webview.SetWebViewClient (WebClient);
+			WebClient.OnNavigating += (object sender, string url) => {
+				if(url.IndexOf("close") >= 0 ){
+					Dismiss();
+				}
+			};
+
 			return view;
 		
 		}
 
-		public bool OnTouch(View v, MotionEvent e)
-		{
-			Android.Util.Log.Debug ("WebPopFragment", "OnTouch {0}", e.Action.ToString ());
-			return true;
-		}
 			
+	}
+
+	public class MyWebViewClient : Android.Webkit.WebViewClient
+	{
+		public delegate void OnNavigatingEvent(object sender, string url);
+		public event OnNavigatingEvent OnNavigating;
+
+		public override bool ShouldOverrideUrlLoading (
+			Android.Webkit.WebView view, 
+			string url
+		)
+		{
+			Android.Util.Log.Debug (
+				"MyWebViewClinet", "ShouldOverrideUrlLoading {0}", url);
+		
+			//	var res =  base.ShouldOverrideUrlLoading (view, url);
+			/// view.LoadUrl (url);
+		
+			if (OnNavigating != null) {
+				OnNavigating (view, url);
+			}
+			return false;
+		}
 	}
 
 }
