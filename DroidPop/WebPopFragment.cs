@@ -41,6 +41,13 @@ namespace DroidPop
 			{
 				this.Dismiss();
 			};
+			var webview = view.WebView (Resource.Id.WebContent);
+			webview.LoadData (@"<html><body><a href=""#close"">Close</a></body></html>",
+				"text/html", "utf-u");
+			
+			view.WebView(Resource.Id.WebContent).Click += (object sender, EventArgs e) => {
+				Android.Util.Log.Debug("WebPopFragment", "Web View Clicked");
+			};
 			return view;
 		
 		}

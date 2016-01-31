@@ -23,6 +23,9 @@ namespace DroidPop
 		public static Button Button(this Activity activity , int id ){
 			return activity.FindViewById<Button> (id);
 		}
+		public static Android.Webkit.WebView WebView(this View view, int id ){
+			return view.FindViewById<Android.Webkit.WebView>(id);
+		}
 	}
 }
 
