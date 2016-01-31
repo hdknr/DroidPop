@@ -19,6 +19,10 @@ namespace DroidPop
 		public static Button Button(this View view , int id ){
 			return view.FindViewById<Button> (id);
 		}
+
+		public static Button Button(this Activity activity , int id ){
+			return activity.FindViewById<Button> (id);
+		}
 	}
 }
 

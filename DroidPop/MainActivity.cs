@@ -23,6 +23,16 @@ namespace DroidPop
 			button.Click += delegate {
 				button.Text = string.Format ("{0} clicks!", count++);
 			};
+
+			this.Button(Resource.Id.OpenWebPop).Click += OpenWebPopDialog;
+
+		}
+
+		void OpenWebPopDialog (object sender, System.EventArgs e)
+		{
+			var transaction = FragmentManager.BeginTransaction();
+			var dialogFragment = new WebPopFragment();
+			dialogFragment.Show(transaction, "webpop_fragment");
 		}
 	}
 }
